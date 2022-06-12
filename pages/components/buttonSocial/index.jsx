@@ -1,21 +1,37 @@
 import { Box, Text } from "@chakra-ui/react";
 
-export const ButtonSocial = ({ text, children }) => {
-  return (
-    <Box mx="auto" mt="1em ">
-      <Box
-        padding="4em"
-        bgColor="blue.400"
-        borderRadius="1.2em"
-        position="relative"
-      >
-        <Box color="white" position="absolute" top="10px" left="10px">
-          {children}
-        </Box>
-        <Text color="white" position="absolute" bottom="10px" left="10px">
-          {text}
-        </Text>
-      </Box>
-    </Box>
-  );
+export const ButtonSocial = ({ text, children }, props) => {
+	console.log(props);
+	return (
+		<Box mx='auto' mt='1em '>
+			<Box
+				{...props}
+				padding='4em'
+				borderRadius='1.2em'
+				border='2px solid'
+				position='relative'
+				cursor='pointer'
+				_hover={{ opacity: 0.8 }}
+			>
+				<Box
+					color='#000'
+					position='absolute'
+					top='10px'
+					left='10px'
+					fontWeight='semibold'
+				>
+					{children}
+				</Box>
+				<Text
+					color='#000'
+					position='absolute'
+					bottom='10px'
+					left='10px'
+					fontWeight='semibold'
+				>
+					{text}
+				</Text>
+			</Box>
+		</Box>
+	);
 };

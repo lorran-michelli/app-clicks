@@ -1,61 +1,80 @@
 import Head from "next/head";
 import {
-  Box,
-  Button,
-  Flex,
-  Text,
-  Progress,
-  CircularProgress,
-  Spacer,
+	Box,
+	Button,
+	Flex,
+	Text,
+	Progress,
+	CircularProgress,
+	Spacer,
+	Stack,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { Logo } from "./components/logo";
 import {
-  FaGithub,
-  FaLinkedin,
-  FaTwitter,
-  FaInstagram,
-  FaYoutube,
+	FaGithub,
+	FaLinkedin,
+	FaTwitter,
+	FaInstagram,
+	FaYoutube,
 } from "react-icons/fa";
 import { ButtonSocial } from "./components/buttonSocial";
+import { Header } from "./components/header";
 
 export default function Home() {
-  return (
-    <Flex
-      bgColor="white"
-      w="full"
-      h="100vh"
-      justifyContent="center"
-      alignItems="center"
-      flexDirection="column"
-    >
-      <Logo mb="1.5rem" height="140px" />
+	return (
+		<Box bgColor='gray.50' h='100vh'>
+			<Header />
+			<Flex
+				w='full'
+				justifyContent='center'
+				alignItems='center'
+				flexDirection='column'
+				maxW='400px'
+				mx='auto'
+				mt='4vh'
+				p='2em'
+			>
+				<Logo mb='1.5rem' height='190px' />
 
-      <Text mb="3rem">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu metus
-        eleifend, commodo leo in, pharetra nisl. Duis ut odio enim. Vestibulum
-        iaculis dui ac.
-      </Text>
+				<Box width='285px' maxW='900px' mt='8'>
+					<Flex mb='4px' fontSize='sm' fontWeight='semibold'>
+						<Text>R$3,50</Text>
+						<Spacer />
+						<Text end>Meta de saque</Text>
+					</Flex>
+					<Progress
+						value={90}
+						size='sm'
+						borderRadius='md'
+						colorScheme='green'
+						bg='gray.300'
+					/>
+				</Box>
 
-      <Flex width="30%">
-        <Text>0%</Text>
-        <Spacer />
-        <Text end>100%</Text>
-      </Flex>
+				<Stack spacing='6' mt='4' pb='5'>
+					<Button
+						bgColor='black'
+						color='white'
+						type='submit'
+						px='50px'
+						py='6'
+						_hover={{ opacity: 0.8 }}
+					>
+						Quero sacar meu dinhero!
+					</Button>
+				</Stack>
 
-      <Box width="30%">
-        <Progress value={80} />
-      </Box>
-
-      <Flex gap="8">
-        <ButtonSocial text="Instagram">
-          <FaInstagram size="25" />
-        </ButtonSocial>
-        <ButtonSocial text="Youtube">
-          <FaYoutube size="25" />
-        </ButtonSocial>
-      </Flex>
-    </Flex>
-  );
+				<Flex gap='10'>
+					<ButtonSocial text='Instagram' bgColor='black'>
+						<FaInstagram size='25' />
+					</ButtonSocial>
+					<ButtonSocial text='Youtube'>
+						<FaYoutube size='25' />
+					</ButtonSocial>
+				</Flex>
+			</Flex>
+		</Box>
+	);
 }
