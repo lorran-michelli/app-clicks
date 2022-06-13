@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import Link from "next/link";
 import { BiExit } from "react-icons/bi";
 import { BsWallet2 } from "react-icons/bs";
 
@@ -10,10 +11,12 @@ export const Header = () => {
 				px='6'
 				fontWeight='semibold'
 				fontSize='lg'
-				color='blue.800'
+				color='#0f0f0f'
 			>
 				<Box cursor='pointer'>
-					<BiExit />
+					<Link href='/'>
+						<BiExit />
+					</Link>
 				</Box>
 				<Text ml='4'>Name</Text>
 			</Flex>
@@ -22,7 +25,7 @@ export const Header = () => {
 				px='6'
 				fontWeight='semibold'
 				fontSize='lg'
-				color='blue.800'
+				color='#0f0f0f'
 			>
 				<BsWallet2 />
 				<Text ml='4'>R$3,00</Text>
