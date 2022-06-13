@@ -4,7 +4,7 @@ import Airtable from "airtable";
 
 Airtable.configure({
 	endpointUrl: "https://api.airtable.com",
-	apiKey: "keyHWsoNxnWj9PMuJ",
+	apiKey: process.env.AIRTABLE_API_KEY,
 });
 
 const base = Airtable.base("appfvBPLRS8AwU2zo");
