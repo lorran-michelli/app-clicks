@@ -8,12 +8,13 @@ import {
 	FormControl,
 	FormLabel,
 	Heading,
-	HStack,
+	VStack,
 	Input,
 	Stack,
 	Text,
 	useBreakpointValue,
 	useColorModeValue,
+	useToast,
 } from "@chakra-ui/react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
@@ -26,6 +27,7 @@ export default function Login() {
 	const AIRTABLE = "/api/airtable";
 
 	const router = useRouter();
+	const toast = useToast();
 
 	const {
 		register,
@@ -40,28 +42,39 @@ export default function Login() {
 		setLoading(true);
 		const options = {
 			method: "POST",
-			url: `${AIRTABLE}/login`,
+			url: `${AIRTABLE}/create`,
 			data: {
-				email: JSON.stringify(data.email),
+				email: data.email,
 				password: data.password,
+				cpf: data.cpf.split(".").join("").split("-").join(""),
+				name: data.name,
 			},
-			timeout: 3000,
+			timeout: 5000,
 		};
 		await axios(options)
 			.then((res) => {
-				if (res.data == "Password incorrect" || res.data == "User not found") {
+				if (res.status == 200) {
 					setLoading(false);
-					alert("Login ou Senha incorretos");
+					toast({
+						title: "Cadastro realizado com sucesso",
+						status: "success",
+					});
+					router.push("/");
 					return;
 				} else {
-					localStorage.setItem("id", res.data.id);
-					localStorage.setItem("user", res.data.name);
-					router.push("/home");
+					toast({
+						title: "Erro, tente novamente mais tarde!",
+						status: "error",
+					});
+					setLoading(false);
 				}
 			})
 			.catch((err) => {
+				toast({
+					title: "Erro, tente novamente mais tarde!",
+					status: "error",
+				});
 				setLoading(false);
-				alert("Login ou Senha incorretos");
 				console.log(err, "erro");
 			});
 	};
@@ -79,14 +92,14 @@ export default function Login() {
 				maxW='lg'
 				py={{
 					base: "12",
-					md: "12",
+					md: "10",
 				}}
 				px={{
 					base: "4",
 					sm: "8",
 				}}
 			>
-				<Stack spacing='5'>
+				<Stack spacing='8'>
 					<Stack spacing='2'>
 						<Flex justify='center' align='center'>
 							<Logo width='240px' />
@@ -98,16 +111,18 @@ export default function Login() {
 							}}
 							textAlign='center'
 						>
-							<HStack spacing='1' justify='center'>
-								<Text color='muted'>{"Não possui uma conta?"}</Text>
+							<VStack spacing='1'>
+								<Text color='muted'>
+									{"Cadastre-se já na plataforma Play milionário."}
+								</Text>
 								<Button
 									variant='link'
 									colorScheme='blue'
-									onClick={() => router.push("/create")}
+									onClick={() => router.push("/")}
 								>
-									Cadastre-se
+									Já possuo uma conta!
 								</Button>
-							</HStack>
+							</VStack>
 						</Stack>
 					</Stack>
 					<Box
@@ -138,24 +153,50 @@ export default function Login() {
 						<Stack spacing='6'>
 							<Stack spacing='5'>
 								<FormControl>
+									<FormLabel>Nome</FormLabel>
+									<Input
+										id='name'
+										type='text'
+										required
+										{...register("name")}
+										placeholder='Digite seu nome completo'
+									/>
+								</FormControl>
+								<FormControl>
+									<FormLabel>CPF</FormLabel>
+									<Input
+										id='cpf'
+										type='text'
+										placeholder='Digite seu CPF'
+										{...register("cpf", {
+											required: true,
+											minLength: 11,
+											maxLength: 14,
+										})}
+									/>
+									{errors.cpf && (
+										<Text fontSize={"xs"} mt='2px' color='red'>
+											{"Digite um CPF válido."}
+										</Text>
+									)}
+								</FormControl>
+								<FormControl>
 									<FormLabel htmlFor='email'>Email</FormLabel>
 									<Input
 										id='email'
 										type='email'
+										defaultValue=''
 										placeholder='Digite seu email'
+										required
 										{...register("email")}
 									/>
 								</FormControl>
-								<PasswordField {...register("password")} formLabel='Senha' />
+								<PasswordField
+									{...register("password")}
+									formLabel='Nova senha'
+								/>
 							</Stack>
-							<HStack justify='space-between'>
-								<Checkbox defaultChecked colorScheme='gray'>
-									Lembrar-me
-								</Checkbox>
-								<Button variant='link' color='black' size='sm'>
-									Esqueceu sua senha?
-								</Button>
-							</HStack>
+
 							<Stack spacing='6'>
 								<Button
 									bgColor='black'
@@ -164,7 +205,7 @@ export default function Login() {
 									_hover={{ opacity: 0.8 }}
 									isLoading={loading}
 								>
-									Entrar
+									Cadastrar
 								</Button>
 							</Stack>
 						</Stack>

@@ -28,7 +28,7 @@ export const PasswordField = React.forwardRef((props, ref) => {
 
 	return (
 		<FormControl>
-			<FormLabel htmlFor='password'>Senha</FormLabel>
+			<FormLabel htmlFor='password'>{props.formLabel}</FormLabel>
 			<InputGroup>
 				<InputRightElement>
 					<IconButton
@@ -42,6 +42,7 @@ export const PasswordField = React.forwardRef((props, ref) => {
 					id='password'
 					ref={mergeRef}
 					name='password'
+					placeholder='Digite sua senha'
 					type={isOpen ? "text" : "password"}
 					autoComplete='current-password'
 					required

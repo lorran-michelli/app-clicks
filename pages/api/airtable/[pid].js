@@ -12,17 +12,16 @@ const base = Airtable.base("appfvBPLRS8AwU2zo");
 export default async function handler(req, res) {
 	const { pid } = req.query;
 
-	/* if (req.method === "POST") {
+	const createUser = () => {
 		base("Tasks").create(
 			[
 				{
 					fields: {
-						user: "Carina Meira",
-					},
-				},
-				{
-					fields: {
-						user: "Lorran Michelli",
+						user: req.body.name,
+						email: req.body.email,
+						password: req.body.password,
+						bank: "0",
+						CPF: req.body.cpf,
 					},
 				},
 			],
@@ -35,11 +34,30 @@ export default async function handler(req, res) {
 					console.log(record.getId());
 				});
 				res.send(
-					`${records.length} records created! Check the console for the record IDs.`
+					`${records.length} record created! Check the console for the record ID.`
 				);
 			}
 		);
-	} */
+	};
+
+	if (req.method === "POST" && pid == "create") {
+		base("Tasks")
+			.select({
+				view: "users",
+				filterByFormula: `CPF = ${req.body.cpf}`,
+			})
+			.all(function (err, records) {
+				if (err) {
+					console.log(err);
+				}
+				if (records.length > 0) {
+					res.status(403).json({ message: "User already exists" });
+					return;
+				} else {
+					createUser();
+				}
+			});
+	}
 
 	if (req.method === "POST" && pid == "login") {
 		base("Tasks")
@@ -55,7 +73,7 @@ export default async function handler(req, res) {
 				} else {
 					if (records.length > 0) {
 						if (String(records[0].fields.password) === req.body.password) {
-							res.send(records[0].id);
+							res.send({ id: records[0].id, name: records[0].fields.user });
 						} else {
 							res.send("Password incorrect");
 						}
@@ -66,27 +84,36 @@ export default async function handler(req, res) {
 			});
 	}
 
-	/* else if (req.method === "GET") {
-		await axios
-			.get(
-				`${AIRTABLE}?maxRecords=1&filterByFormula=(%7BEMAIL%7D=%22${req.query.email}%22)`,
-				CONFIG
-			)
-			.then((response) => res.send(response.data))
-			.catch((err) => res.status(400).send({}));
-	} else if (req.method === "POST") {
-		await axios
-			.post(`${AIRTABLE}`, { records: [{ fields: req.body }] }, CONFIG)
-			.then((response) => res.send(response.data))
-			.catch((err) => res.status(400).send({}));
-	} else if (req.method === "PATCH") {
-		await axios
-			.patch(
-				`${AIRTABLE}`,
-				{ records: [{ id: req.body.id, fields: req.body.fields }] },
-				CONFIG
-			)
-			.then((response) => res.send(response.data))
-			.catch((err) => res.status(400).send({}));
-	} */
+	if (req.method === "POST" && pid == "me") {
+		base("Tasks").find(`${req.body.id}`, function (err, record) {
+			if (err) {
+				console.error(err);
+				return;
+			}
+			res.send({ name: record.fields.user, bank: record.fields.bank });
+		});
+	}
+
+	if (req.method === "PATCH") {
+		base("Tasks").update(
+			[
+				{
+					id: req.body.id,
+					fields: {
+						bank: req.body.bank,
+					},
+				},
+			],
+			function (err, records) {
+				if (err) {
+					console.error(err);
+					return;
+				}
+				records.forEach(function (record) {
+					res.send(record.id);
+					console.log(record.id);
+				});
+			}
+		);
+	}
 }
