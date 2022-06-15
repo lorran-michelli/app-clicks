@@ -9,14 +9,14 @@ import {
 	Spinner,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { Logo } from "./components/logo";
+import { Logo } from "../components/logo";
 import { FaInstagram, FaYoutube } from "react-icons/fa";
-import { ButtonSocial } from "./components/buttonSocial";
-import { Header } from "./components/header";
+import { ButtonSocial } from "../components/buttonSocial";
+import { Header } from "../components/header";
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { PopUp } from "./components/popUp";
+import { PopUp } from "../components/popUp";
 
 export default function Home() {
 	const AIRTABLE = "/api/airtable";
