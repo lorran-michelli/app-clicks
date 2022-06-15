@@ -8,8 +8,8 @@ import {
 	Spinner,
 	useToast,
 } from "@chakra-ui/react";
-import { Logo } from "../components/logo";
-import { Header } from "../components/header";
+import { Logo } from "../../components/logo";
+import { Header } from "../../components/header";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -69,7 +69,7 @@ export default function Video() {
 		await axios(options)
 			.then((response) => {
 				console.log(response);
-				setTimeout(() => router.push("/home"), 10000);
+				setTimeout(() => router.push("/home"), 60000);
 			})
 			.catch((error) => {
 				console.log(error);

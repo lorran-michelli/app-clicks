@@ -18,8 +18,8 @@ import {
 } from "@chakra-ui/react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { Logo } from "./components/logo";
-import { PasswordField } from "./components/passwordField";
+import { Logo } from "../components/logo";
+import { PasswordField } from "../components/passwordField";
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -48,6 +48,17 @@ export default function Login() {
 				password: data.password,
 				cpf: data.cpf.split(".").join("").split("-").join(""),
 				name: data.name,
+				whatsapp: data.whatsapp
+					.split(" ")
+					.join("")
+					.split("-")
+					.join("")
+					.split(".")
+					.join("")
+					.split("(")
+					.join("")
+					.split(")")
+					.join(""),
 			},
 			timeout: 5000,
 		};
@@ -181,6 +192,22 @@ export default function Login() {
 									)}
 								</FormControl>
 								<FormControl>
+									<FormLabel>WhatsApp {`(apenas números)`}</FormLabel>
+									<Input
+										id='whatsapp'
+										type='text'
+										defaultValue=''
+										placeholder='Digite o número do seu WhatsApp'
+										required
+										{...register("whatsapp", { minLength: 11, maxLength: 12 })}
+									/>
+									{errors.whatsapp && (
+										<Text fontSize={"xs"} mt='2px' color='red'>
+											{"Digite um número válido."}
+										</Text>
+									)}
+								</FormControl>
+								<FormControl>
 									<FormLabel htmlFor='email'>Email</FormLabel>
 									<Input
 										id='email'
@@ -191,9 +218,10 @@ export default function Login() {
 										{...register("email")}
 									/>
 								</FormControl>
+
 								<PasswordField
 									{...register("password")}
-									formLabel='Nova senha'
+									formlabel='Nova senha'
 								/>
 							</Stack>
 

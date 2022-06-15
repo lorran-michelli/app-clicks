@@ -22,6 +22,7 @@ export default async function handler(req, res) {
 						password: req.body.password,
 						bank: "0",
 						CPF: req.body.cpf,
+						whatsapp: req.body.whatsapp,
 					},
 				},
 			],
@@ -36,6 +37,31 @@ export default async function handler(req, res) {
 				res.send(
 					`${records.length} record created! Check the console for the record ID.`
 				);
+			}
+		);
+	};
+
+	const forgotPassword = (records, req) => {
+		base("Tasks").update(
+			[
+				{
+					id: records[0].id,
+					fields: {
+						password: req.body.password,
+					},
+				},
+			],
+			function (err, records) {
+				if (err) {
+					console.error(asdasd);
+					console.error(err);
+					res.status(422).json({ message: "Error user not found" });
+					return;
+				}
+				records.forEach(function (record) {
+					res.send("Senha alterada com sucesso");
+					console.log(record.id);
+				});
 			}
 		);
 	};
@@ -115,5 +141,20 @@ export default async function handler(req, res) {
 				});
 			}
 		);
+	}
+
+	if (req.method === "PATCH" && pid == "forgot") {
+		base("Tasks")
+			.select({
+				view: "users",
+				filterByFormula: `CPF = ${req.body.cpf}`,
+			})
+			.all(function (err, records) {
+				if (records.length > 0) {
+					forgotPassword(records, req);
+				} else {
+					res.status(422).json({ message: "User not found" });
+				}
+			});
 	}
 }

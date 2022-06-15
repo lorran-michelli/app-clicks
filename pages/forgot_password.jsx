@@ -1,14 +1,11 @@
 import {
 	Box,
 	Button,
-	Checkbox,
 	Container,
-	Divider,
 	Flex,
 	FormControl,
 	FormLabel,
-	Heading,
-	HStack,
+	VStack,
 	Input,
 	Stack,
 	Text,
@@ -25,14 +22,12 @@ import { useRouter } from "next/router";
 
 export default function Login() {
 	const AIRTABLE = "/api/airtable";
-
 	const router = useRouter();
 	const toast = useToast();
 
 	const {
 		register,
 		handleSubmit,
-		watch,
 		formState: { errors },
 	} = useForm();
 
@@ -41,35 +36,41 @@ export default function Login() {
 	const onSubmit = async (data) => {
 		setLoading(true);
 		const options = {
-			method: "POST",
-			url: `${AIRTABLE}/login`,
+			method: "PATCH",
+			url: `${AIRTABLE}/forgot`,
 			data: {
-				email: JSON.stringify(data.email),
-				password: data.password,
+				password: data.password1,
+				cpf: data.cpf.split(".").join("").split("-").join(""),
 			},
-			timeout: 3000,
+			timeout: 5000,
 		};
 		await axios(options)
 			.then((res) => {
-				if (res.data == "Password incorrect" || res.data == "User not found") {
+				if (res.status == 200) {
 					setLoading(false);
 					toast({
-						title: "Usuário ou Senha incorretos",
-						status: "error",
+						title: "Senha atualizada com sucesso!",
+						status: "success",
 					});
+					router.push("/");
 					return;
-				} else {
-					localStorage.setItem("id", res.data.id);
-					localStorage.setItem("user", res.data.name);
-					router.push("/home");
 				}
 			})
 			.catch((err) => {
-				setLoading(false);
+				if (err.response.status == 422) {
+					toast({
+						title: "CPF não encontrado, verifique seu CPF e tente novamente!",
+						status: "error",
+					});
+					setLoading(false);
+					return;
+				}
 				toast({
-					title: "Usuário ou Senha incorretos",
+					title:
+						"Erro, tente novamente mais tarde ou entre em contato com o suporte.",
 					status: "error",
 				});
+				setLoading(false);
 				console.log(err, "erro");
 			});
 	};
@@ -87,14 +88,14 @@ export default function Login() {
 				maxW='lg'
 				py={{
 					base: "12",
-					md: "12",
+					md: "10",
 				}}
 				px={{
 					base: "4",
 					sm: "8",
 				}}
 			>
-				<Stack spacing='5'>
+				<Stack spacing='8'>
 					<Stack spacing='2'>
 						<Flex justify='center' align='center'>
 							<Logo width='240px' />
@@ -106,16 +107,18 @@ export default function Login() {
 							}}
 							textAlign='center'
 						>
-							<HStack spacing='1' justify='center'>
-								<Text color='muted'>{"Não possui uma conta?"}</Text>
+							<VStack spacing='1'>
+								<Text color='muted'>
+									{"Digite seu CPF para redefinir a sua senha."}
+								</Text>
 								<Button
 									variant='link'
 									colorScheme='blue'
 									onClick={() => router.push("/create")}
 								>
-									Cadastre-se
+									Caso ainda não tenha uma conta, clique aqui para criar!
 								</Button>
-							</HStack>
+							</VStack>
 						</Stack>
 					</Stack>
 					<Box
@@ -146,29 +149,30 @@ export default function Login() {
 						<Stack spacing='6'>
 							<Stack spacing='5'>
 								<FormControl>
-									<FormLabel htmlFor='email'>Email</FormLabel>
+									<FormLabel>CPF:</FormLabel>
 									<Input
-										id='email'
-										type='email'
-										placeholder='Digite seu email'
-										{...register("email")}
+										id='cpf'
+										type='text'
+										placeholder='Digite seu CPF'
+										{...register("cpf", {
+											required: true,
+											minLength: 11,
+											maxLength: 14,
+										})}
 									/>
+									{errors.cpf && (
+										<Text fontSize={"xs"} mt='2px' color='red'>
+											{"Digite um CPF válido."}
+										</Text>
+									)}
 								</FormControl>
-								<PasswordField {...register("password")} formlabel='Senha' />
+								<PasswordField
+									{...register("password1")}
+									placeholder='Digite sua nova senha'
+									formlabel='Senha:'
+								/>
 							</Stack>
-							<HStack justify='space-between'>
-								<Checkbox defaultChecked colorScheme='gray'>
-									Lembrar-me
-								</Checkbox>
-								<Button
-									variant='link'
-									color='black'
-									size='sm'
-									onClick={() => router.push("/forgot_password")}
-								>
-									Esqueceu sua senha?
-								</Button>
-							</HStack>
+
 							<Stack spacing='6'>
 								<Button
 									bgColor='black'
@@ -177,7 +181,7 @@ export default function Login() {
 									_hover={{ opacity: 0.8 }}
 									isLoading={loading}
 								>
-									Entrar
+									Enviar
 								</Button>
 							</Stack>
 						</Stack>
