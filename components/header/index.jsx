@@ -7,13 +7,13 @@ export const Header = ({ name, money, isLoading, backIcon }) => {
 	const router = useRouter();
 
 	return (
-		<Flex justify='space-between' align='center' h='90px' bgColor={"white"}>
+		<Flex justify='space-between' align='center' h='90px' bgColor={"black"}>
 			<Flex
 				align='center'
 				px='3'
 				fontWeight='semibold'
 				fontSize={["sm", "lg"]}
-				color='#0f0f0f'
+				color='white'
 			>
 				{isLoading ? (
 					"Carregando..."
@@ -22,8 +22,8 @@ export const Header = ({ name, money, isLoading, backIcon }) => {
 						<Box cursor='pointer'>
 							<Button
 								p='0'
-								bgColor='white'
-								_hover={{ bg: "gray.50" }}
+								bgColor='black'
+								_hover={{ opacity: 0.8 }}
 								onClick={() =>
 									backIcon
 										? router.push("/home")
@@ -42,7 +42,7 @@ export const Header = ({ name, money, isLoading, backIcon }) => {
 				px='6'
 				fontWeight='semibold'
 				fontSize={["md", "lg"]}
-				color='#0f0f0f'
+				color='white'
 			>
 				{isLoading ? null : (
 					<>

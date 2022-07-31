@@ -18,7 +18,7 @@ export default function Video() {
 	const router = useRouter();
 	const toast = useToast();
 	const text = router.query.name;
-	const options = ["Youtube", "Instagram"];
+	const options = ["Tiktok"];
 	const [isLoading, setLoading] = useState(true);
 	const [name, setName] = useState("");
 	const [progress, setProgress] = useState(0);
@@ -77,7 +77,7 @@ export default function Video() {
 	};
 
 	return (
-		<Box bgColor='gray.50' h='100vh'>
+		<Box bgColor='black' h='100vh' color='white'>
 			<Header name={name} backIcon={true} />
 			{isLoading ? (
 				<Flex align='center' w='100%' h='87%' justify='center'>
@@ -115,8 +115,8 @@ export default function Video() {
 							onClick={handleClickEvent}
 							target='_blank'
 							rel='noreferrer'
-							bgColor='black'
-							color='white'
+							bgColor='#00eae7 '
+							color='black'
 							type='submit'
 							px='30px'
 							py='6'

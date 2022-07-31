@@ -7,7 +7,7 @@ Airtable.configure({
 	apiKey: process.env.AIRTABLE_API_KEY,
 });
 
-const base = Airtable.base("appfvBPLRS8AwU2zo");
+const base = Airtable.base("appSdEMSPRbtOp4ZB");
 
 export default async function handler(req, res) {
 	const { pid } = req.query;

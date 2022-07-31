@@ -1,15 +1,17 @@
 import { Box, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-export const ButtonSocial = ({ text, children, onClick }, props) => {
+export const ButtonSocial = ({ text, children }, props) => {
 	const router = useRouter();
 	return (
 		<Box mx='auto' mt='1em '>
 			<Box
 				{...props}
-				padding='4em'
+				px='9em'
+				py='4em'
 				borderRadius='1.2em'
-				border='2px solid'
+				border='2px solid #00eae7 '
+				bgColor='#ff174d'
 				position='relative'
 				cursor='pointer'
 				_hover={{ opacity: 0.8 }}
@@ -33,6 +35,9 @@ export const ButtonSocial = ({ text, children, onClick }, props) => {
 				>
 					{text}
 				</Text>
+			</Box>
+			<Box fontSize='xs' textAlign='center' mt='2'>
+				Clique no botão acima para assistir
 			</Box>
 		</Box>
 	);

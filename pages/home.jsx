@@ -10,7 +10,7 @@ import {
 	useDisclosure,
 } from "@chakra-ui/react";
 import { Logo } from "../components/logo";
-import { FaInstagram, FaYoutube } from "react-icons/fa";
+import { FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
 import { ButtonSocial } from "../components/buttonSocial";
 import { Header } from "../components/header";
 import React, { useEffect, useMemo, useState } from "react";
@@ -65,11 +65,11 @@ export default function Home() {
 	}, []);
 	const messages =
 		progress < 3000
-			? `Voce precisa completar a barra da meta para finalizar seu saque! Ou aguardar um colaborador do Play Premiado te chamar, caso sobre valor de premiação para distribuir.`
-			: `Parabéns, entre em contato com um colaborador Play milionário para receber sua premiação!`;
+			? `Voce precisa completar a barra da meta para finalizar seu saque! Ou aguardar um colaborador do TikTok Pay te chamar, caso sobre valor de premiação para distribuir.`
+			: `Parabéns, entre em contato com um colaborador TikTok Pay para receber sua premiação!`;
 
 	return (
-		<Box bgColor='gray.50' h='100vh'>
+		<Box bgColor='black' h='100vh' color='white'>
 			<Header money={saldo} name={name} isLoading={isLoading} />
 
 			<PopUp
@@ -94,7 +94,7 @@ export default function Home() {
 					mt='4vh'
 					p='2em'
 				>
-					<Logo mb='1.5rem' height='190px' />
+					<Logo mb='1.5rem' height='200px' />
 
 					<Box width='285px' maxW='900px' mt='8'>
 						<Flex mb='4px' fontSize='sm' fontWeight='semibold'>
@@ -113,8 +113,8 @@ export default function Home() {
 
 					<Stack spacing='6' mt='4' pb='5'>
 						<Button
-							bgColor='black'
-							color='white'
+							bgColor='#00eae7'
+							color='black'
 							type='submit'
 							px='50px'
 							py='6'
@@ -126,11 +126,8 @@ export default function Home() {
 					</Stack>
 
 					<Flex gap='10'>
-						<ButtonSocial text='Instagram' bgColor='black'>
-							<FaInstagram size='25' />
-						</ButtonSocial>
-						<ButtonSocial text='Youtube'>
-							<FaYoutube size='25' />
+						<ButtonSocial text='Tiktok'>
+							<FaTiktok size='25' />
 						</ButtonSocial>
 					</Flex>
 				</Flex>
